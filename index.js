@@ -61,38 +61,36 @@ app.get('/Products', function (req, res) {
     try {
         res.contentType('application/json').status(200).send(JSON.stringify(allProducts));
     } catch (err) {
-        res.status(500).send('{"errorMessage" : "' + err + '"}');
-        console.log('Error %s ', err);
+        res.status(500).send('Fehler: ' + err);
     }
 });
 
 app.get('/Product/:id', function (res, req) {
-
+    try {
+        var product = findById(allProducts, req.params.id);
+        res.contentType('application/json').status(200).location('/Products/' + product.id).send(JSON.stringify(product));
+    } catch (err) {
+        res.status(500).send('Fehler:' + err + '"}');
+    }
 });
 
 app.post('/Products', function (req, res) {
     try {
-        console.log("req: " + req);
-        console.log("body: " + req.body);
-
         var product = req.body;
-
         var newProduct = AddProduct(product.album, product.interpret, product.price);
-        res.status(201).location('/Products/' + newProduct.id).send();
+        res.contentType('application/json').status(201).location('/Products/' + newProduct.id).send(JSON.stringify(newProduct));
     } catch (err) {
-        res.status(500).send('{"errorMessage" : "' + err + '"}');
-        console.log('Error %s', err);
+        res.status(500).send('Fehler:' + err + '"}');
     }
 });
 
 
 app.put('/Products/:id', function (req, res) {
-    console.log("req: " + req);
-    console.log("body: " + req.body);
-
-
     var newProduct = req.body;
-    //newProduct.id = req.params.id;
+    if (newProduct.id == undefined)
+        newProduct.id = req.params.id;
+    if (newProduct.id != req.params.id)
+        return res.status(401).send("die übergebene Id in der Url stimmt nicht mit der im Body überein.");
 
     var product = findById(allProducts, req.params.id);
     allProducts[allProducts.indexOf(product)] = newProduct;
