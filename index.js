@@ -1,5 +1,6 @@
 var express = require('express');
 var cors = require('cors');
+var bodyParser = require('body-parser');
 
 // Define some default values if not set in environment
 var PORT = process.env.PORT || 3000;
@@ -11,6 +12,7 @@ var app = express();
 
 // Add CORS headers
 app.use(cors());
+app.use(bodyParser.json());
 
 // Add health check endpoint
 app.get(SERVICE_CHECK_HTTP, function (req, res) {
@@ -27,7 +29,7 @@ function initialAdd()
 
 function findById(source, id) {
     for (var i = 0; i < source.length; i++) {
-        if (source[i].id === id) {
+        if (source[i].id == id) {
             return source[i];
         }
     }
@@ -39,9 +41,10 @@ var idIndexer = 0
 //Object Product
 function AddProduct(album,interpret,price)
 {
-    var product = {id: idIndexer, album : album, interpret : interpret, price : price };
-    idIndexer = allProducts.length
+    var product = { id: idIndexer, album : album, interpret : interpret, price : price };
+    idIndexer++;
     allProducts.push(product);
+    return product;
 }
 
 // Add all other service routes
@@ -54,14 +57,19 @@ app.get('/Products', function (req, res) {
     }
 });
 
+app.get('/Product/:id', function (res, req) {
+
+});
+
 app.post('/Products', function (req, res) {
     try {
         console.log("req: " + req);
         console.log("body: " + req.body);
 
-        var product = JSON.parse(req.body.toString());
-        allProducts.push(product)
-        res.status(201)
+        var product = req.body;
+
+        var newProduct = AddProduct(product.album, product.interpret, product.price);
+        res.status(201).location('/Products/' + newProduct.id).send();
     } catch (err) {
         res.status(500).send('{"errorMessage" : "' + err + '"}');
         console.log('Error %s', err);
@@ -70,10 +78,15 @@ app.post('/Products', function (req, res) {
 
 
 app.put('/Products/:id', function (req, res) {
-    req.contentType('application/json');
-    var product = JSON.parse(req.body);
-    product.id = req.params.id;
-    allProducts[allProducts.indexOf(product)] = product;
+    console.log("req: " + req);
+    console.log("body: " + req.body);
+
+
+    var newProduct = req.body;
+    //newProduct.id = req.params.id;
+
+    var product = findById(allProducts, req.params.id);
+    allProducts[allProducts.indexOf(product)] = newProduct;
     res.send("Produkt mit id + " + req.params.id +" geändert ", req.params.id);
 });
 
