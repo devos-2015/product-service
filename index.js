@@ -25,28 +25,38 @@ function initialAdd()
     AddProduct("The Eye of the Tiger", "Survivor", 1.86)
 }
 
+function findById(source, id) {
+    for (var i = 0; i < source.length; i++) {
+        if (source[i].id == id) {
+            return source[i];
+        }
+    }
+    throw "Couldn't find object with id: " + id;
+}
+
 function DeleteProduct(id)
 {
-    console.log("id: " + id);
-    
-    allProducts.splice(id, 1);
-    console.log("done"+ allProducts.toString);
+    console.log("Delete Product with ID: " + id);
+    var product = findById(allProducts, id);
+    allProducts.splice(allProducts.indexOf(product), 1);
+    console.log("Done deleting Product with ID: " +id+ " .");
 }
 
 var allProducts = [];
 var idIndexer = 0
+
 //Object Product
 function AddProduct(album,interpret,price)
 {
-    idIndexer++;
     var product = {id: idIndexer, album : album, interpret : interpret, price : price };
+    idIndexer = allProducts.length
     allProducts.push(product);
 }
 
 // Add all other service routes
 app.get('/Products', function (req, res) {
     try {
-        res.status(200).send(JSON.stringify(allProducts));
+        res.contentType('application/json').status(200).send(JSON.stringify(allProducts));
     } catch (err) {
         res.status(500).send('{"errorMessage" : "' + err + '"}');
         console.log('Error %s ', err);
@@ -68,17 +78,21 @@ app.post('/Products', function (req, res) {
 });
 
 
-
-app.put('/Products/:id', function (req, res, next) {
-    res.send("id: "+ next);
+app.put('/Products/:id', function (req, res) {
+    req.contentType('application/json');
+    var product = JSON.parse(req.body);
+    product.id = req.params.id;
+    allProducts[allProducts.indexOf(product)] = product;
+    res.send("Produkt mit id + " + req.params.id +" geändert ", req.params.id);
 });
 
 app.delete('/Products/:id', function (req, res) {
     try {
         console.log("req: " + req);
-               
+
         DeleteProduct(req.params.id);
-        res.status(201)
+        res.status(200).send("Product with ID " + req.params.id + " deleted.")
+
     } catch (err) {
         res.status(500).send('{"errorMessage" : "' + err + '"}');
         console.log('Error %s', err);
