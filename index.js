@@ -17,46 +17,64 @@ app.get(SERVICE_CHECK_HTTP, function (req, res) {
   res.send({ message: 'OK' });
 });
 
-var allProducts = [];
+function initialAdd()
+{
+    AddProduct("Best of 15 Years", "ABBA", 1.99)
+    AddProduct("We are the Champions", "Queen", 1.79)
+    AddProduct("Die Perfekte Welle", "Juli", 1.99)
+    AddProduct("The Eye of the Tiger", "Survivor", 1.86)
+}
 
+var allProducts = [];
+var idIndexer = 0
 //Object Product
 function AddProduct(album,interpret,price)
 {
-    var product = { Album : album, Interpret : interpret, Price : price };
+    idIndexer++;
+    var product = {id: idIndexer, album : album, interpret : interpret, price : price };
     allProducts.push(product);
+    allProducts.
 }
 
-
-
 // Add all other service routes
-app.get('/GetAllProducts', function (req, res) {
+app.get('/Products', function (req, res) {
     try {
-        AddProduct("Best of 15 Years", "ABBA", 1.99)
-        AddProduct("We are the Champions", "Queen", 1.79)
-        AddProduct("Die Perfekte Welle", "Juli", 1.99)
-        AddProduct("Album1", "Interpret1", 1.86)
-
         res.status(200).send(JSON.stringify(allProducts));
     } catch (err) {
-        res.status(500)
-        console.log('Error %e ...', err);
+        res.status(500).send('{"errorMessage" : "' + err + '"}');
+        console.log('Error %s ', err);
     }
 });
 
-app.post('/AddNewProduct', function (req, res) {
+app.post('/Products', function (req, res) {
     try {
-        var product = JSON.parse(req.body);
+        console.log("req: " + req);
+        console.log("body: " + req.body);
+
+        var product = JSON.parse(req.body.toString());
         allProducts.push(product)
         res.status(201)
     } catch (err) {
-        res.status(500)
-        console.log('Error %e ...', err);
+        res.status(500).send('{"errorMessage" : "' + err + '"}');
+        console.log('Error %s', err);
     }
 });
 
+
+
+app.put('/Products/:id', function (req, res, next) {
+    res.send("id: "+ next);
+});
+
+app.delete('/Products', function (req, res) {
+
+});
+
+//Initial einige Objekte hinzufügen
+initialAdd()
+
 // Start the server
 var server = app.listen(PORT);
-
 console.log('Service listening on port %s ...', PORT);
 
 
