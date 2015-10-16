@@ -25,6 +25,14 @@ function initialAdd()
     AddProduct("The Eye of the Tiger", "Survivor", 1.86)
 }
 
+function DeleteProduct(id)
+{
+    console.log("id: " + id);
+    
+    allProducts.splice(id, 1);
+    console.log("done"+ allProducts.toString);
+}
+
 var allProducts = [];
 var idIndexer = 0
 //Object Product
@@ -33,7 +41,6 @@ function AddProduct(album,interpret,price)
     idIndexer++;
     var product = {id: idIndexer, album : album, interpret : interpret, price : price };
     allProducts.push(product);
-    allProducts.
 }
 
 // Add all other service routes
@@ -66,8 +73,16 @@ app.put('/Products/:id', function (req, res, next) {
     res.send("id: "+ next);
 });
 
-app.delete('/Products', function (req, res) {
-
+app.delete('/Products/:id', function (req, res) {
+    try {
+        console.log("req: " + req);
+               
+        DeleteProduct(req.params.id);
+        res.status(201)
+    } catch (err) {
+        res.status(500).send('{"errorMessage" : "' + err + '"}');
+        console.log('Error %s', err);
+    }
 });
 
 //Initial einige Objekte hinzufügen
