@@ -43,6 +43,12 @@ app.get('/GetAllProducts', function (req, res) {
     }
 });
 
+app.post('/AddNewProduct', function (req, res) {
+    var product = JSON.parse(req.body);
+    allProducts.push(product)
+    res.status(201)
+});
+
 // Start the server
 var server = app.listen(PORT);
 
