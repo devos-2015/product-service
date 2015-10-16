@@ -31,14 +31,16 @@ function AddProduct(album,interpret,price)
 // Add all other service routes
 app.get('/GetAllProducts', function (req, res) {
     try {
-        AddProduct("eins", "zwei", 1.99)
+        AddProduct("Best of 15 Years", "ABBA", 1.99)
+        AddProduct("We are the Champions", "Queen", 1.79)
+        AddProduct("Die Perfekte Welle", "Juli", 1.99)
+        AddProduct("Album1", "Interpret1", 1.86)
 
         res.status(200).send(JSON.stringify(allProducts));
     } catch (err) {
         res.status(500)
         console.log('Error %e ...', err);
     }
-
 });
 
 // Start the server
