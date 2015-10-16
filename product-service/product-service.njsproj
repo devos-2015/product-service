@@ -40,6 +40,7 @@
     <Content Include="Dockerfile" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="staticProducts.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gulpfile.js" />

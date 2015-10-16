@@ -17,10 +17,12 @@ app.get(SERVICE_CHECK_HTTP, function (req, res) {
   res.send({ message: 'OK' });
 });
 
+var allProducts = [];
 
 // Add all other service routes
 app.get('/GetAllProducts', function (req, res) {
-  res.send();
+    var json = '[ {     "Album": "Best of 15 Years",     "Interpret": "ABBA",     "Price": "1.99" }]';
+    res.status(200).send(json);
 });
 
 // Start the server
