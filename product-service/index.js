@@ -17,20 +17,31 @@ app.get(SERVICE_CHECK_HTTP, function (req, res) {
   res.send({ message: 'OK' });
 });
 
+var allProducts = [];
+
 //Object Product
 function Product(album,interpret,price)
 {
-  this.Album = album;
-  this.Interpret = interpret;
-  this.Price = price;
+    var newProduct;
+    newProduct.Album = album;
+    newProduct.Interpret = interpret;
+    newProduct.Price = price;
+
+    allProducts.push(newProduct);
 }
 
 
 
 // Add all other service routes
 app.get('/GetAllProducts', function (req, res) {
-    var json = '[ {     "Album": "Best of 15 Years",     "Interpret": "ABBA",     "Price": "1.99" }]';
-    res.status(200).send(json);
+    try {
+        Product("eins", "zwei", 1.99)
+
+        res.status(200).send(allProducts.toString);
+    } catch (err) {
+        console.log('Error %e ...', err);
+    }
+
 });
 
 // Start the server
