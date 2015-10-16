@@ -1,6 +1,6 @@
 {
   "name": "product-service",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "This is the service for providing products und some functions",
   "author": "Lino & Marco",
   "license": "MIT",
