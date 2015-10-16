@@ -1,13 +1,13 @@
 {
-  "name": "hello-world-service",
-  "version": "1.1.0",
-  "description": "This is an example of a node microservice",
-  "author": "Andreas Helmberger <public@ahelmberger.de>",
+  "name": "product-service",
+  "version": "1.0.2",
+  "description": "This is the service for providing products und some functions",
+  "author": "Lino & Marco",
   "license": "MIT",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/devos-2015/hello-world-service.git"
+    "url": "https://github.com/devos-2015/product-service.git"
   },
   "keywords": [
     "microservice",

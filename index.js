@@ -44,9 +44,14 @@ app.get('/GetAllProducts', function (req, res) {
 });
 
 app.post('/AddNewProduct', function (req, res) {
-    var product = JSON.parse(req.body);
-    allProducts.push(product)
-    res.status(201)
+    try {
+        var product = JSON.parse(req.body);
+        allProducts.push(product)
+        res.status(201)
+    } catch (err) {
+        res.status(500)
+        console.log('Error %e ...', err);
+    }
 });
 
 // Start the server
