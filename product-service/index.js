@@ -20,14 +20,10 @@ app.get(SERVICE_CHECK_HTTP, function (req, res) {
 var allProducts = [];
 
 //Object Product
-function Product(album,interpret,price)
+function AddProduct(album,interpret,price)
 {
-    var newProduct;
-    newProduct.Album = album;
-    newProduct.Interpret = interpret;
-    newProduct.Price = price;
-
-    allProducts.push(newProduct);
+    var product = { Album : album, Interpret : interpret, Price : price };
+    allProducts.push(product);
 }
 
 
@@ -35,10 +31,11 @@ function Product(album,interpret,price)
 // Add all other service routes
 app.get('/GetAllProducts', function (req, res) {
     try {
-        Product("eins", "zwei", 1.99)
+        AddProduct("eins", "zwei", 1.99)
 
-        res.status(200).send(allProducts.toString);
+        res.status(200).send(JSON.stringify(allProducts));
     } catch (err) {
+        res.status(500)
         console.log('Error %e ...', err);
     }
 
