@@ -17,7 +17,15 @@ app.get(SERVICE_CHECK_HTTP, function (req, res) {
   res.send({ message: 'OK' });
 });
 
-var allProducts = [];
+//Object Product
+function Product(album,interpret,price)
+{
+  this.Album = album;
+  this.Interpret = interpret;
+  this.Price = price;
+}
+
+
 
 // Add all other service routes
 app.get('/GetAllProducts', function (req, res) {
